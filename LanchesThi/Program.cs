@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using LanchesThi.Data;
 using LanchesThi.Repositories.Interfaces;
 using LanchesThi.Repository;
+using LanchesThi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
-builder.Services.AddTransient<ILanchesRepository, LanchesRepository>();
+builder.Services.AddTransient<ILancheRepository, LancheRepository>();
+builder.Services.AddScoped(sp => CarrinhoCompra.GetCarrinho(sp));
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddMemoryCache();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -30,6 +37,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

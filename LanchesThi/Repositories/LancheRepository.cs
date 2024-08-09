@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LanchesThi.Repository
 {
-    public class LanchesRepository : ILanchesRepository
+    public class LancheRepository : ILancheRepository
     {
         private readonly AppDbContext _context;
 
-        public LanchesRepository(AppDbContext context)
+        public LancheRepository(AppDbContext context)
         {
             _context = context;            
         }
