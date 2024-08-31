@@ -1,6 +1,9 @@
-﻿namespace LanchesThi.Repositories.Interfaces
+﻿using LanchesThi.Models;
+
+namespace LanchesThi.Repositories.Interfaces
 {
-    public class IPedidoRepository
+    public interface IPedidoRepository
     {
+        void CriarPedido(Pedido pedido);
     }
 }

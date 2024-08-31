@@ -5,7 +5,7 @@ namespace LanchesThi.Models
 {
     public class Pedido
     {
-        public int Pedidoid { get; set; }
+        public int PedidoId { get; set; }
 
         [Required(ErrorMessage = "Informe o nome")]
         [StringLength(50)]
@@ -67,6 +67,6 @@ namespace LanchesThi.Models
         [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
         public DateTime? PedidoEntregueEm { get; set; }
 
-        public List<PedidoDetalhe> Pedidoitens { get; set; }
+        public List<PedidoDetalhe> PedidoItens { get; set; }
     }
 }
