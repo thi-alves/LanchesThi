@@ -1,5 +1,6 @@
 ﻿using LanchesThi.Models;
 using LanchesThi.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LanchesThi.Controllers
@@ -16,6 +17,7 @@ namespace LanchesThi.Controllers
 
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Checkout()
         {
@@ -23,6 +25,7 @@ namespace LanchesThi.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Checkout(Pedido pedido)
         {

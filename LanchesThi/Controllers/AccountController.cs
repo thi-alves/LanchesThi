@@ -11,12 +11,45 @@ namespace LanchesThi.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
+        public object HttpContextUser { get; private set; }
+
         public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(LoginViewModel registroVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new IdentityUser()
+                {
+                    UserName = registroVM.UserName
+                };
+                var result = await _userManager.CreateAsync(user, registroVM.Password);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                else
+                {
+                    ModelState.AddModelError("Registro", "Falha ao realizar o registro");
+                }
+
+            }
+            return View(registroVM);
+
+        }
 
         [HttpGet]
         public IActionResult Login(string returnUrl)
@@ -54,6 +87,16 @@ namespace LanchesThi.Controllers
 
             ModelState.AddModelError("", "Falha ao realizar login!!");
             return View(loginVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Clear();
+            HttpContextUser = null;
+
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
