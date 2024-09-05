@@ -5,6 +5,7 @@ using LanchesThi.Repository;
 using LanchesThi.Models;
 using LanchesThi.Repositories;
 using Microsoft.AspNetCore.Identity;
+using LanchesThi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,12 +34,39 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddTransient<ILancheRepository, LancheRepository>();
 builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
+builder.Services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin",
+    politica =>
+    {
+        politica.RequireRole("Admin");
+    });
+});
+
 builder.Services.AddScoped(sp => CarrinhoCompra.GetCarrinho(sp));
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
+
+void CriarPerfisUsuarios(WebApplication app)
+{
+    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+    using (var scope = scopedFactory.CreateScope())
+    {
+        var service =
+            scope.ServiceProvider.GetService<ISeedUserRoleInitial>();
+        //cria os perfis/papeis
+        service.SeedRoles();
+        //criar os usuarios ao perfil
+        service.SeedUsers();
+
+    }
+}
 
 var app = builder.Build();
 
@@ -49,6 +77,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+CriarPerfisUsuarios(app);
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -61,9 +91,14 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+  name: "areas",
+  pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}"
+);
+
+app.MapControllerRoute(
     name: "categoriaFiltro",
     pattern: "Lanche/{action}/{categoria?}",
-    defaults: new { Controller = "Lanche", Action = "List"});
+    defaults: new { Controller = "Lanche", Action = "List" });
 
 
 app.MapControllerRoute(
