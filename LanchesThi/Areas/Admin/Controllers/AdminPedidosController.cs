@@ -8,26 +8,45 @@ using Microsoft.EntityFrameworkCore;
 using LanchesThi.Data;
 using LanchesThi.Models;
 using Microsoft.AspNetCore.Authorization;
+using ReflectionIT.Mvc.Paging;
+using LanchesThi.Migrations;
+using LanchesThi.ViewModels;
 
 namespace LanchesThi.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize("Admin")]
 
-    public class AdminPedidoController : Controller
+    public class AdminPedidosController : Controller
     {
         private readonly AppDbContext _context;
 
-        public AdminPedidoController(AppDbContext context)
+        public AdminPedidosController(AppDbContext context)
         {
             _context = context;
         }
 
         // GET: Admin/AdminPedido
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Pedidos.ToListAsync());
+        //}
+
+        public async Task<IActionResult> Index(string filter, int pageindex = 1, string sort = "Nome")
         {
-            return View(await _context.Pedidos.ToListAsync());
+            var resultado = _context.Pedidos.AsNoTracking()
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filter)){
+                resultado = resultado.Where(p => p.Nome.Contains(filter));
+            }
+
+            var model = await PagingList.CreateAsync(resultado, 5, pageindex, sort, "Nome");
+            model.RouteValue = new RouteValueDictionary { { "filter", filter } };
+
+            return View(model);
         }
+
 
         // GET: Admin/AdminPedido/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -156,6 +175,28 @@ namespace LanchesThi.Areas.Admin.Controllers
         private bool PedidoExists(int id)
         {
             return _context.Pedidos.Any(e => e.PedidoId == id);
+        }
+
+        public IActionResult PedidoLanches(int? id)
+        {
+            var pedido = _context.Pedidos
+                .Include(pd => pd.PedidoItens)
+                .ThenInclude(l => l.Lanche)
+                .FirstOrDefault(pedido => pedido.PedidoId == id);
+
+            if(pedido == null)
+            {
+                Response.StatusCode = 404;
+                return View("PedidonNotFound", id.Value);
+            }
+
+            PedidoLancheViewModel pedidoLanches = new PedidoLancheViewModel()
+            {
+                Pedido = pedido,
+                PedidoDetalhes = pedido.PedidoItens
+            };
+
+            return View(pedidoLanches);
         }
     }
 }

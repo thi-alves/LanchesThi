@@ -6,11 +6,23 @@ using LanchesThi.Models;
 using LanchesThi.Repositories;
 using Microsoft.AspNetCore.Identity;
 using LanchesThi.Services;
+using ReflectionIT.Mvc.Paging;
+using LanchesThi.Areas.Admin.Services;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//Adicionando o serviço de paginação
+builder.Services.AddPaging(options =>
+{
+    options.ViewName = "Bootstrap4";
+    options.PageParameterName = "pageIndex";
+});
+
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -20,6 +32,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
+
+builder.Services.Configure<ConfigurationImagens>(builder.Configuration.GetSection("ConfigurationPastaImagens"));
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -35,6 +50,7 @@ builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddTransient<ILancheRepository, LancheRepository>();
 builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
+builder.Services.AddScoped<RelatorioVendasService>();
 
 builder.Services.AddAuthorization(options =>
 {
