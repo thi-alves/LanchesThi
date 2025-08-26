@@ -1,4 +1,4 @@
-**##LanchesThi:**
+## LanchesThi:
 
 Projeto que desenvolvi no curso de ASP.NET do professsor Marcoratti
 
@@ -8,46 +8,46 @@ Na área para os clientes, o sistema exibe os lanches disponíveis. Nela também
 Para comprar um lanche, o usuário seleciona o lanche e aperta em "Adicionar ao carrinho". Após ter selecionadotodos os itens desejados, basta ir ao carrinho, concluir o pedido e preencher um formulário.
 Foi utilizado a biblioteca Identity da Microsoft para realizar a autenticação de usuários, bem como gerenciar seus papéis (roles).
 
-**##Imagens do sistema:**
+## Imagens do sistema:
 
-**### Página inicial (HOME)**
+### Página inicial (HOME)
 
 ![image](https://github.com/user-attachments/assets/4bff06ce-bf20-48cf-b52d-30605a289595)
 
 ![image](https://github.com/user-attachments/assets/a43c9264-2eca-424a-a480-3ab17d10243d)
 
-**### Filtrar lanches por categoria:**
+### Filtrar lanches por categoria:
 
 ![image](https://github.com/user-attachments/assets/5ef624e2-11a7-4785-8c4d-95fa09ffcf05)
 
 ![image](https://github.com/user-attachments/assets/1b2e539b-3d25-4387-9625-ab0aa249faac)
 
-**### Página de registro:**
+### Página de registro:
 
 ![image](https://github.com/user-attachments/assets/3f4ea5b5-e2c9-44c1-86e5-a316da508e0e)
 
-**### Página de login:**
+### Página de login:
 
 ![image](https://github.com/user-attachments/assets/d25c1dcb-d10e-49fb-a60b-20026a1f4d3c)
 
-**### Área do Admin:**
-**####Gerenciar Produtos:**
+## Área do Admin:
+### Gerenciar Produtos
 
 ![image](https://github.com/user-attachments/assets/bfb97888-c552-418f-9ec9-9c3716331154)
 
 ![image](https://github.com/user-attachments/assets/d8e65f78-30b2-4a72-b023-36b768f13370)
 
-###Gerenciar Categorias:
+### Gerenciar Categorias:
 
 ![image](https://github.com/user-attachments/assets/d67cbbee-d583-4042-94fe-e15b55bb5d3e)
 
 ![image](https://github.com/user-attachments/assets/514f3fb1-671c-43b9-b099-82039a67806d)
 
-**####Gráfico de vendas:**
+### Gráfico de vendas:
 
 ![image](https://github.com/user-attachments/assets/6da92a73-5517-43e3-9558-88fa13d2700d)
 
-**####Gerenciar Imagens:**
+### Gerenciar Imagens:
 
 ![image](https://github.com/user-attachments/assets/6ee12185-3b8b-49f0-841d-b8c32ffcce29)
 
